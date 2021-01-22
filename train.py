@@ -147,12 +147,12 @@ def train(hyp):
     # plot_lr_scheduler(optimizer, scheduler, epochs)
 
     # Initialize distributed training
-    if device.type != 'cpu' and torch.cuda.device_count() > 1 and torch.distributed.is_available():
-        dist.init_process_group(backend='nccl',  # distributed backend
-                                init_method='tcp://127.0.0.1:9999',  # init method
-                                world_size=1,  # number of nodes
-                                rank=0)  # node rank
-        model = torch.nn.parallel.DistributedDataParallel(model)
+    # if device.type != 'cpu' and torch.cuda.device_count() > 1 and torch.distributed.is_available():
+    #     dist.init_process_group(backend='nccl',  # distributed backend
+    #                             init_method='tcp://127.0.0.1:9999',  # init method
+    #                             world_size=1,  # number of nodes
+    #                             rank=0)  # node rank
+    #     model = torch.nn.parallel.DistributedDataParallel(model)
 
     # Dataset
     dataset = LoadImagesAndLabels(train_path, imgsz, batch_size,
@@ -333,7 +333,7 @@ def train(hyp):
         # plot_results()  # save as results.png
         pass
     print('%g epochs completed in %.3f hours.\n' % (epoch - start_epoch + 1, (time.time() - t0) / 3600))
-    dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
+    # dist.destroy_process_group() if torch.cuda.device_count() > 1 else None
     torch.cuda.empty_cache()
     return results
 
